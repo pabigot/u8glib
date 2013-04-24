@@ -1,0 +1,42 @@
+
+ * Currently unsupported
+  * T6963 not supported by AVR, Chipkit (PIC32) and Arduino Due
+  * HW SPI not supported by Chipkit (PIC32) and Arduino Due
+  * I2C not supported by Chipkit (PIC32) and Arduino Due
+  * SBN1661/SED1520 not supported by AVR and Arduino Due
+
+ * Mode
+  * BW: Black and white mode, one bit per pixel.
+  * 4L: Four gray levels, two bits per pixel
+
+ * Com
+  * HW SPI: Use pin definitions from the Arduino variant files
+  * SW SPI: Use internal software SPI communication
+  * I2C: Use hardware I2C/TWI 
+  * 8Bit: 8 bit parallel communication with {{{digitalWrite}}}
+  * 8Bit Fast: 8 bit parallel communication with {{{digitalPinToPort}}} 
+
+ * Pin Names
+  * *sck*: Clock 
+  * *mosi*: Serial data
+  * *cs*, *cs1*, *cs2*: Chip select
+  * *a0*, *di*: Data/instruction register select, datasheet names usually are A0, DI or RS
+  * *rw*: Read/write line
+  * *en*: Read/write enable 
+  * *d0* - *d7*: Parallel data
+  * *reset*: Display reset
+
+ * Implementation Status
+  * verified: Implemented and tested
+  * impl.: Implemented
+  * n.a.: Not available
+  
+ * setContrast: For some devices, the contrast value can be assigned with the {{{setContrast}}} procedure.
+ 
+ * 16 Bit mode: U8glib can be put into 16 Bit mode. Remove comment from {{{#define U8G_16BIT 1}}} in u8g.h
+ 
+ * Other controller, which might be compatible (this information is not verified). A controller might be compatible with other controllers in the same line.
+  * {{{ST7565}}}, {{{NT7534}}}, {{{SED1565}}}, {{{S1D15605}}}, {{{S6B0723}}}
+  * {{{SBN1661}}}, {{{SED1520}}}: Write is triggered by CSx lines. 
+  * {{{SED1335}}}, {{{RA8835}}}, {{{S1D3305}}}  (not supported by u8glib)
+  * {{{NT7086}}}, {{{LC7981}}}
