@@ -32,7 +32,7 @@ HW SPI
 :Arduino
 verified
 :Arduino Due
-n.a.
+v1.14
 :Chipkit
 n.a.
 :AVR
@@ -64,7 +64,7 @@ HW SPI
 :Arduino
 verified
 :Arduino Due
-n.a.
+v1.14
 :Chipkit
 n.a.
 :AVR
@@ -99,7 +99,7 @@ HW SPI
 :Arduino
 verified
 :Arduino Due
-n.a.
+v1.14
 :Chipkit
 n.a.
 :AVR
@@ -130,7 +130,7 @@ HW SPI
 :Arduino
 verified
 :Arduino Due
-n.a.
+v1.14
 :Chipkit
 n.a.
 :AVR
@@ -170,7 +170,7 @@ HW SPI
 :Arduino
 impl.
 :Arduino Due
-n.a.
+v1.14
 :Chipkit
 n.a.
 :AVR
@@ -196,7 +196,7 @@ verified
 :Com
 SW SPI
 :Device
-<tt>u8g_dev_ssd1325_nhd27oled_2x_gr_sw_spi</tt>
+<tt>u8g_dev_ssd1327_96x96_2x_gr_sw_spi</tt>
 :C++ Constructor
 <tt>U8GLIB_SSD1327_96X96_2X_GR(sck, mosi, cs, a0 [, reset])</tt>
 :Arduino
@@ -211,13 +211,13 @@ impl.
 :Com
 HW SPI
 :Device
-<tt>u8g_dev_ssd1325_nhd27oled_2x_gr_hw_spi</tt>
+<tt>u8g_dev_ssd1327_96x96_2x_gr_hw_spi</tt>
 :C++ Constructor
 <tt>U8GLIB_SSD1327_96X96_2X_GR(cs, a0 [, reset])</tt>
 :Arduino
 impl.
 :Arduino Due
-n.a.
+v1.14
 :Chipkit
 n.a.
 :AVR
@@ -233,6 +233,45 @@ I2C
 impl.
 :Arduino Due
 n.a.
+:Chipkit
+n.a.
+:AVR
+impl.
+::
+:Controller
+SSD1322
+:Display/Size
+NHD-3.12-25664, 256x64
+:Mode
+4L
+:Set Contrast
+yes
+:Page Size
+256 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_ssd1322_nhd31oled_gr_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_NHD31OLED_GR(sck, mosi, cs, a0 [, reset])</tt>
+:Arduino
+impl.
+:Arduino Due
+impl.
+:Chipkit
+impl.
+:AVR
+impl.
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_ssd1322_nhd31oled_gr_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_NHD31OLED_GR(cs, a0 [, reset])</tt>
+:Arduino
+impl.
+:Arduino Due
+v1.14
 :Chipkit
 n.a.
 :AVR
@@ -272,7 +311,7 @@ HW SPI
 :Arduino
 verified
 :Arduino Due
-n.a.
+v1.14
 :Chipkit
 n.a.
 :AVR
@@ -292,6 +331,53 @@ n.a.
 n.a.
 :AVR
 impl.
+::
+:Page Size
+256 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_ssd1306_128x64_2x_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1306_128X64_2X(sck, mosi, cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.13
+:Arduino Due
+impl. v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+::
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_ssd1306_128x64_2x_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1306_128X64_2X(cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.13
+:Arduino Due
+v1.14
+:Chipkit
+n.a.
+:AVR
+impl. v1.13
+::
+:Com
+I2C
+:Device
+<tt>u8g_dev_ssd1306_128x64_2x_i2c</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1306_128X64_2X(U8G_I2C_OPT_NONE)</tt>
+:Arduino
+impl. v1.13
+:Arduino Due
+n.a.
+:Chipkit
+n.a.
+:AVR
+impl. v1.13
 ::
 :Display/Size
 128x32
@@ -325,7 +411,7 @@ HW SPI
 :Arduino
 impl.
 :Arduino Due
-n.a.
+v1.14
 :Chipkit
 n.a.
 :AVR
@@ -345,6 +431,53 @@ n.a.
 n.a.
 :AVR
 impl.
+::
+:Page Size
+256 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_ssd1306_128x32_2x_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1306_128X32_2X(sck, mosi, cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.13
+:Arduino Due
+impl. v1.13 
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+::
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_ssd1306_128x32_2x_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1306_128X32_2X(cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.13
+:Arduino Due
+v1.14
+:Chipkit
+n.a.
+:AVR
+impl. v1.13
+::
+:Com
+I2C
+:Device
+<tt>u8g_dev_ssd1306_128x32_2x_i2c</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1306_128X32_2X(U8G_I2C_OPT_NONE)</tt>
+:Arduino
+impl.  v1.13
+:Arduino Due
+n.a.
+:Chipkit
+n.a.
+:AVR
+impl.  v1.13
 ::
 :Controller
 SSD1309
@@ -379,7 +512,7 @@ HW SPI
 :Arduino
 impl. (v1.10)
 :Arduino Due
-impl. v1.11
+v1.14
 :Chipkit
 n.a.
 :AVR
@@ -432,11 +565,42 @@ HW SPI
 :Arduino
 verified
 :Arduino Due
-n.a.
+v1.14
 :Chipkit
 n.a.
 :AVR
 impl.
+::
+:Page Size
+204 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_uc1701_dogs102_2x_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_DOGS102_2X(sck, mosi, cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.13
+:Arduino Due
+impl. v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_uc1701_dogs102_2x_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_DOGS102_2X(cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.13
+:Arduino Due
+v1.14
+:Chipkit
+n.a.
+:AVR
+impl. v1.13
 ::
 :Display/Size
 MINI12864, 128x64
@@ -469,11 +633,182 @@ HW SPI
 :Arduino
 impl.
 :Arduino Due
-n.a.
+v1.14
 :Chipkit
 n.a.
 :AVR
 impl.
+::
+:Page Size
+256 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_uc1701_mini12864_2x_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_MINI12864_2X(sck, mosi, cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.13
+:Arduino Due
+impl. v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_uc1701_mini12864_2x_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_MINI12864_2X(cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.13
+:Arduino Due
+v1.14
+:Chipkit
+n.a.
+:AVR
+impl. v1.13
+::
+:Controller
+UC1601
+:Display/Size
+c128032, 128x32
+:Mode
+BW
+:Set Contrast
+impl. v1.13
+:Page Size
+128 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_uc1601_c128032_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_UC1601_C128032(sck, mosi, cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.13
+:Arduino Due
+impl. v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_uc1601_c128032_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_UC1601_C128032(cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.13
+:Arduino Due
+v1.14
+:Chipkit
+n.a.
+:AVR
+impl. v1.13
+::
+:Page Size
+256 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_uc1601_c128032_2x_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_UC1601_C128032_2X(sck, mosi, cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.13
+:Arduino Due
+impl. v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_uc1601_c128032_2x_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_UC1601_C128032_2X(cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.13
+:Arduino Due
+v1.14
+:Chipkit
+n.a.
+:AVR
+impl. v1.13
+::
+:Controller
+UC1608
+:Display/Size
+240x64
+:Mode
+BW
+:Set Contrast
+yes
+:Page Size
+240 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_uc1608_240x64_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_UC1608_240X64(sck, mosi, cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.15
+:Arduino Due
+impl. v1.15
+:Chipkit
+impl. v1.15
+:AVR
+impl. v1.15
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_uc1608_240x64_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_UC1608_240X64(cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.15
+:Arduino Due
+impl. v1.15
+:Chipkit
+n.a.
+:AVR
+impl. v1.15
+::
+:Page Size
+256 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_uc1608_240x64_2x_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_UC1608_240X64_2X(sck, mosi, cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.15
+:Arduino Due
+impl. v1.15
+:Chipkit
+impl. v1.15
+:AVR
+impl. v1.15
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_uc1608_240x64_2x_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_UC1608_240X64_2X(cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.15
+:Arduino Due
+impl. v1.15
+:Chipkit
+n.a.
+:AVR
+impl. v1.15
 ::
 :Controller
 ST7565
@@ -508,11 +843,42 @@ HW SPI
 :Arduino
 verified
 :Arduino Due
-n.a.
+v1.14
 :Chipkit
 n.a.
 :AVR
 impl.
+::
+:Page Size
+256 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_st7565_dogm128_2x_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_DOGM128_2X(sck, mosi, cs, a0 [, reset])</tt>
+:Arduino
+verified  v1.13
+:Arduino Due
+impl.  v1.13
+:Chipkit
+impl.  v1.13
+:AVR
+impl.  v1.13
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_st7565_dogm128_2x_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_DOGM128_2X(cs, a0 [, reset])</tt>
+:Arduino
+verified  v1.13
+:Arduino Due
+v1.14
+:Chipkit
+n.a.
+:AVR
+impl. v1.13
 ::
 :Display/Size
 LM6059, 128x64, Adafruit
@@ -545,11 +911,42 @@ HW SPI
 :Arduino
 verified
 :Arduino Due
-n.a.
+v1.14
 :Chipkit
 n.a.
 :AVR
 impl.
+::
+:Page Size
+256 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_st7565_lm6059_2x_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_LM6059_2X(sck, mosi, cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.13
+:Arduino Due
+impl. v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_st7565_lm6059_2x_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_LM6059_2X(cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.13
+:Arduino Due
+v1.14
+:Chipkit
+n.a.
+:AVR
+impl. v1.13
 ::
 :Display/Size
 LM6063, 128x64
@@ -582,11 +979,42 @@ HW SPI
 :Arduino
 verified
 :Arduino Due
-n.a.
+v1.14
 :Chipkit
 n.a.
 :AVR
 impl.
+::
+:Page Size
+256 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_st7565_lm6063_2x_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_LM6063_2X(sck, mosi, cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.13
+:Arduino Due
+impl. v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_st7565_lm6063_2x_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_LM6063_2X(cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.13
+:Arduino Due
+v1.14
+:Chipkit
+n.a.
+:AVR
+impl. v1.13
 ::
 :Display/Size
 NHD C12864, 128x64
@@ -619,11 +1047,42 @@ HW SPI
 :Arduino
 verified, v1.08
 :Arduino Due
-n.a.
+v1.14
 :Chipkit
 n.a.
 :AVR
 impl.
+::
+:Page Size
+256 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_st7565_nhd_c12864_2x_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_NHD_C12864_2X(sck, mosi, cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.13
+:Arduino Due
+impl. v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_st7565_nhd_c12864_2x_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_NHD_C12864_2X(cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.13
+:Arduino Due
+v1.14
+:Chipkit
+n.a.
+:AVR
+impl. v1.13
 ::
 :Display/Size
 Displaytech 64128n, 128x64
@@ -656,11 +1115,42 @@ HW SPI
 :Arduino
 verified v1.09
 :Arduino Due
-n.a.
+v1.14
 :Chipkit
 n.a.
 :AVR
 impl. v1.09
+::
+:Page Size
+256 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_st7565_64128n_2x_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_64128N_2X(sck, mosi, cs, a0 [, reset])</tt>
+:Arduino
+impl.  v1.13
+:Arduino Due
+impl. v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_st7565_64128n_2x_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_64128N_2X(cs, a0 [, reset])</tt>
+:Arduino
+impl. v1.13
+:Arduino Due
+v1.14
+:Chipkit
+n.a.
+:AVR
+impl. v1.13
 ::
 :Display/Size
 DOGM132, 132x32
@@ -693,7 +1183,7 @@ HW SPI
 :Arduino
 verified
 :Arduino Due
-n.a.
+v1.14
 :Chipkit
 n.a.
 :AVR
@@ -730,7 +1220,7 @@ HW SPI
 :Arduino
 verified
 :Arduino Due
-n.a.
+v1.14
 :Chipkit
 n.a.
 :AVR
@@ -1050,7 +1540,7 @@ HW SPI
 :Arduino
 verified
 :Arduino Due
-n.a.
+v1.14
 :Chipkit
 n.a.
 :AVR
@@ -1081,7 +1571,7 @@ HW SPI
 :Arduino
 verified
 :Arduino Due
-n.a.
+v1.14
 :Chipkit
 n.a.
 :AVR
@@ -1116,7 +1606,7 @@ HW SPI
 :Arduino
 verified
 :Arduino Due
-n.a.
+v1.14
 :Chipkit
 n.a.
 :AVR
@@ -1147,7 +1637,7 @@ HW SPI
 :Arduino
 verified
 :Arduino Due
-n.a.
+v1.14
 :Chipkit
 n.a.
 :AVR
@@ -1173,6 +1663,20 @@ SW SPI
 verified
 :Arduino Due
 impl. v1.11
+:Chipkit
+impl.
+:AVR
+impl.
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_pcd8544_84x48_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_PCD8544(cs, a0 [, reset])</tt>
+:Arduino
+impl
+:Arduino Due
+v1.14
 :Chipkit
 impl.
 :AVR
@@ -1222,7 +1726,21 @@ SW SPI
 :Arduino
 verified
 :Arduino Due
-impl. v1.11
+v1.14
+:Chipkit
+impl.
+:AVR
+impl.
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_pcf8812_96x65_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_PCF8812(cs, a0 [, reset])</tt>
+:Arduino
+impl.
+:Arduino Due
+v1.14
 :Chipkit
 impl.
 :AVR
@@ -1445,6 +1963,346 @@ impl. v1.11
 impl. v1.09
 :AVR
 impl. v1.09
+::
+:Controller
+SSD1351
+:Display/Size
+128x128 (ILSoft)
+:Mode
+332
+:Set Contrast
+yes
+:Page Size
+1024 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_ssd1351_128x128_332_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1351_128X128_332(sck, mosi, cs, a0 [, reset]) </tt>
+:Arduino
+verified v1.13
+:Arduino Due
+verified v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_ssd1351_128x128_332_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1351_128X128_332(cs, a0 [, reset]) </tt>
+:Arduino
+verified v1.13
+:Arduino Due
+verified v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+::
+:Page Size
+4096 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_ssd1351_128x128_4X_332_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1351_128X128_4X_332(sck, mosi, cs, a0 [, reset]) </tt>
+:Arduino
+verified v1.13
+:Arduino Due
+verified v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_ssd1351_128x128_4X_332_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1351_128X128_4X_332(cs, a0 [, reset]) </tt>
+:Arduino
+verified v1.13
+:Arduino Due
+verified v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+::
+:Mode
+64K
+:Set Contrast
+yes
+:Page Size
+1024 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_ssd1351_128x128_hicolor_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1351_128X128_HICOLOR(sck, mosi, cs, a0 [, reset]) </tt>
+:Arduino
+verified v1.13
+:Arduino Due
+verified v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_ssd1351_128x128_hicolor_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1351_128X128_HICOLOR(cs, a0 [, reset]) </tt>
+:Arduino
+verified v1.13
+:Arduino Due
+verified v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+::
+:Page Size
+4096 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_ssd1351_128x128_4X_hicolor_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1351_128X128_4X_HICOLOR(sck, mosi, cs, a0 [, reset]) </tt>
+:Arduino
+verified v1.13
+:Arduino Due
+verified v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_ssd1351_128x128_4X_hicolor_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1351_128X128_4X_HICOLOR(cs, a0 [, reset]) </tt>
+:Arduino
+verified v1.13
+:Arduino Due
+verified v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+::
+:Display/Size
+128x128 (Freetronics)
+:Mode
+332
+:Set Contrast
+yes
+:Page Size
+1024 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_ssd1351_128x128gh_332_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1351_128X128GH_332(sck, mosi, cs, a0 [, reset]) </tt>
+:Arduino
+verified v1.13
+:Arduino Due
+verified v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_ssd1351_128x128gh_332_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1351_128X128GH_332(cs, a0 [, reset]) </tt>
+:Arduino
+verified v1.13
+:Arduino Due
+verified v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+::
+:Page Size
+4096 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_ssd1351_128x128gh_4X_332_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1351_128X128GH_4X_332(sck, mosi, cs, a0 [, reset]) </tt>
+:Arduino
+verified v1.13
+:Arduino Due
+verified v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_ssd1351_128x128gh_4X_332_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1351_128X128GH_4X_332(cs, a0 [, reset]) </tt>
+:Arduino
+verified v1.13
+:Arduino Due
+verified v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+::
+:Mode
+64K
+:Set Contrast
+yes
+:Page Size
+1024 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_ssd1351_128x128gh_hicolor_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1351_128X128GH_HICOLOR(sck, mosi, cs, a0 [, reset]) </tt>
+:Arduino
+verified v1.13
+:Arduino Due
+verified v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_ssd1351_128x128gh_hicolor_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1351_128X128GH_HICOLOR(cs, a0 [, reset]) </tt>
+:Arduino
+verified v1.13
+:Arduino Due
+verified v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+::
+:Page Size
+4096 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_ssd1351_128x128gh_4X_hicolor_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1351_128X128GH_4X_HICOLOR(sck, mosi, cs, a0 [, reset]) </tt>
+:Arduino
+verified v1.13
+:Arduino Due
+verified v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_ssd1351_128x128gh_4X_hicolor_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1351_128X128GH_4X_HICOLOR(cs, a0 [, reset]) </tt>
+:Arduino
+verified v1.13
+:Arduino Due
+verified v1.13
+:Chipkit
+impl. v1.13
+:AVR
+impl. v1.13
+::
+:Controller
+HT1632
+:Display/Size
+24x16
+:Mode
+BW
+:Set Contrast
+yes
+:Page Size
+48 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_ht1632_24x16</tt>
+:C++ Constructor
+<tt>U8GLIB_HT1632_24X16(wr/sck, data/mosi, cs) </tt>
+:Arduino
+impl. v1.13
+:Arduino Due
+n.a.
+:Chipkit
+n.a.
+:AVR
+n.a.
+::
+:Controller
+A2 Micro Printer
+:Display/Size
+384x240
+:Mode
+BW
+:Set Contrast
+n.a.
+:Page Size
+384 Bytes
+:Com
+:Device
+<tt>u8g_dev_a2_micro_printer_384x240</tt>
+:C++ Constructor
+n.a.
+:Arduino
+impl. v1.14
+:Arduino Due
+impl. v1.14
+:Chipkit
+impl. v1.14
+:AVR
+impl. v1.14
+:Display/Size
+192x120
+:Mode
+BW
+:Set Contrast
+n.a.
+:Page Size
+192 Bytes
+:Com
+:Device
+<tt>u8g_dev_a2_micro_printer_192x120_ds</tt>
+:C++ Constructor
+n.a.
+:Arduino
+impl. v1.14
+:Arduino Due
+impl. v1.14
+:Chipkit
+impl. v1.14
+:AVR
+impl. v1.14
 ::
 :Controller
 callback fn
