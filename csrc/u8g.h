@@ -335,6 +335,7 @@ extern u8g_dev_t u8g_dev_lc7981_320x64_8bit;
 
 /* T6963, all t6963 devices have double page (2x) */
 extern u8g_dev_t u8g_dev_t6963_240x128_8bit;
+extern u8g_dev_t u8g_dev_t6963_128x128_8bit;
 extern u8g_dev_t u8g_dev_t6963_240x64_8bit;
 extern u8g_dev_t u8g_dev_t6963_128x64_8bit;
 
@@ -402,9 +403,22 @@ extern u8g_dev_t u8g_dev_ssd1306_128x64_sw_spi;
 extern u8g_dev_t u8g_dev_ssd1306_128x64_hw_spi;
 extern u8g_dev_t u8g_dev_ssd1306_128x64_i2c;
 
+extern u8g_dev_t u8g_dev_ssd1306_adafruit_128x64_sw_spi;
+extern u8g_dev_t u8g_dev_ssd1306_adafruit_128x64_hw_spi;
+extern u8g_dev_t u8g_dev_ssd1306_adafruit_128x64_i2c;
+
 extern u8g_dev_t u8g_dev_ssd1306_128x64_2x_sw_spi;
 extern u8g_dev_t u8g_dev_ssd1306_128x64_2x_hw_spi;
 extern u8g_dev_t u8g_dev_ssd1306_128x64_2x_i2c;
+
+/* OLED 128x64 Display with SH1106 Controller */
+extern u8g_dev_t u8g_dev_sh1106_128x64_sw_spi;
+extern u8g_dev_t u8g_dev_sh1106_128x64_hw_spi;
+extern u8g_dev_t u8g_dev_sh1106_128x64_i2c;
+
+extern u8g_dev_t u8g_dev_sh1106_128x64_2x_sw_spi;
+extern u8g_dev_t u8g_dev_sh1106_128x64_2x_hw_spi;
+extern u8g_dev_t u8g_dev_sh1106_128x64_2x_i2c;
 
 /* OLED 128x64 Display with SSD1309 Controller */
 extern u8g_dev_t u8g_dev_ssd1309_128x64_sw_spi;
