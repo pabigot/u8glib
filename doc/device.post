@@ -14,7 +14,9 @@
  * Com
   * HW SPI: Use pin definitions from the Arduino variant files
   * SW SPI: Use internal software SPI communication
-  * I2C: Use hardware I2C/TWI 
+  * I2C: Use hardware I2C/TWI. The following options are supported:
+   * {{{U8G_I2C_OPT_NONE}}}: Normal TWI operation.
+   * {{{U8G_I2C_OPT_NO_ACK}}}: U8glib will ignore ACK (for those devices which do not send ACK, Available with v1.16)
   * 8Bit: 8 bit parallel communication with {{{digitalWrite}}}
   * 8Bit Fast: 8 bit parallel communication with {{{digitalPinToPort}}} 
 
@@ -42,6 +44,7 @@
   * {{{SBN1661}}}, {{{SED1520}}}: Write is triggered by CSx lines. 
   * {{{SED1335}}}, {{{RA8835}}}, {{{S1D3305}}}  (not supported by u8glib)
   * {{{NT7086}}}, {{{LC7981}}}, {{{HD61830}}} (?)
+  * {{{SSD1306}}} (128x64), {{{SH1106}}} (132x64)
   
  * LCD Modules with ST7920 Controller
   * Serial mode (PSB = LOW)

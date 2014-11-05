@@ -335,6 +335,7 @@ extern u8g_dev_t u8g_dev_lc7981_320x64_8bit;
 
 /* T6963, all t6963 devices have double page (2x) */
 extern u8g_dev_t u8g_dev_t6963_240x128_8bit;
+extern u8g_dev_t u8g_dev_t6963_128x128_8bit;
 extern u8g_dev_t u8g_dev_t6963_240x64_8bit;
 extern u8g_dev_t u8g_dev_t6963_128x64_8bit;
 
@@ -402,9 +403,22 @@ extern u8g_dev_t u8g_dev_ssd1306_128x64_sw_spi;
 extern u8g_dev_t u8g_dev_ssd1306_128x64_hw_spi;
 extern u8g_dev_t u8g_dev_ssd1306_128x64_i2c;
 
+extern u8g_dev_t u8g_dev_ssd1306_adafruit_128x64_sw_spi;
+extern u8g_dev_t u8g_dev_ssd1306_adafruit_128x64_hw_spi;
+extern u8g_dev_t u8g_dev_ssd1306_adafruit_128x64_i2c;
+
 extern u8g_dev_t u8g_dev_ssd1306_128x64_2x_sw_spi;
 extern u8g_dev_t u8g_dev_ssd1306_128x64_2x_hw_spi;
 extern u8g_dev_t u8g_dev_ssd1306_128x64_2x_i2c;
+
+/* OLED 128x64 Display with SH1106 Controller */
+extern u8g_dev_t u8g_dev_sh1106_128x64_sw_spi;
+extern u8g_dev_t u8g_dev_sh1106_128x64_hw_spi;
+extern u8g_dev_t u8g_dev_sh1106_128x64_i2c;
+
+extern u8g_dev_t u8g_dev_sh1106_128x64_2x_sw_spi;
+extern u8g_dev_t u8g_dev_sh1106_128x64_2x_hw_spi;
+extern u8g_dev_t u8g_dev_sh1106_128x64_2x_i2c;
 
 /* OLED 128x64 Display with SSD1309 Controller */
 extern u8g_dev_t u8g_dev_ssd1309_128x64_sw_spi;
@@ -419,6 +433,11 @@ extern u8g_dev_t u8g_dev_ssd1306_128x32_i2c;
 extern u8g_dev_t u8g_dev_ssd1306_128x32_2x_sw_spi;
 extern u8g_dev_t u8g_dev_ssd1306_128x32_2x_hw_spi;
 extern u8g_dev_t u8g_dev_ssd1306_128x32_2x_i2c;
+
+/* OLED 60x32 Display with LD7032 Controller */
+extern u8g_dev_t u8g_dev_ld7032_60x32_sw_spi;
+extern u8g_dev_t u8g_dev_ld7032_60x32_hw_spi;
+extern u8g_dev_t u8g_dev_ld7032_60x32_parallel;
 
 /* experimental 65K TFT with st7687 controller */
 extern u8g_dev_t u8g_dev_st7687_c144mvgd_sw_spi;
@@ -1339,6 +1358,7 @@ void st_Step(uint8_t player_pos, uint8_t is_auto_fire, uint8_t is_fire);
 
 /* options for u8g_i2c_init() */
 #define U8G_I2C_OPT_NONE 0
+#define U8G_I2C_OPT_NO_ACK 2
 
 /* retrun values from u8g_twi_get_error() */
 #define U8G_I2C_ERR_NONE 0x00
