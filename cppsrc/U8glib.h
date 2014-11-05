@@ -57,10 +57,8 @@ class U8GLIB : public Print
   protected:
     uint8_t init8BitFixedPort(u8g_dev_t *dev, uint8_t en, uint8_t cs, uint8_t di, uint8_t rw, uint8_t reset);
   private:
-    uint8_t init8Bit(u8g_dev_t *dev, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, 
-        uint8_t en, uint8_t cs1, uint8_t cs2, uint8_t di, uint8_t rw = U8G_PIN_NONE, uint8_t reset = U8G_PIN_NONE);
-    uint8_t initRW8Bit(u8g_dev_t *dev, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, 
-      uint8_t cs, uint8_t a0, uint8_t wr, uint8_t rd, uint8_t reset);
+    uint8_t init8Bit(u8g_dev_t *dev, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, uint8_t en, uint8_t cs1, uint8_t cs2, uint8_t di, uint8_t rw = U8G_PIN_NONE, uint8_t reset = U8G_PIN_NONE);
+    uint8_t initRW8Bit(u8g_dev_t *dev, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, uint8_t cs, uint8_t a0, uint8_t wr, uint8_t rd, uint8_t reset);
   public:
   
     /* constructor */
@@ -76,11 +74,9 @@ class U8GLIB : public Print
       { initHWSPI(dev, cs, a0, reset); }
     U8GLIB(u8g_dev_t *dev, uint8_t options) 
       { initI2C(dev, options); }
-    U8GLIB(u8g_dev_t *dev, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, 
-        uint8_t en, uint8_t cs1, uint8_t cs2, uint8_t di, uint8_t rw, uint8_t reset) 
+    U8GLIB(u8g_dev_t *dev, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, uint8_t en, uint8_t cs1, uint8_t cs2, uint8_t di, uint8_t rw, uint8_t reset) 
       { init8Bit(dev, d0, d1, d2, d3, d4, d5, d6, d7, en, cs1, cs2, di, rw, reset); }
-    U8GLIB(u8g_dev_t *dev, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, 
-        uint8_t cs, uint8_t a0, uint8_t wr, uint8_t rd, uint8_t reset) 
+    U8GLIB(u8g_dev_t *dev, uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, uint8_t cs, uint8_t a0, uint8_t wr, uint8_t rd, uint8_t reset) 
       { initRW8Bit(dev, d0, d1, d2, d3, d4, d5, d6, d7, cs, a0, wr, rd, reset); }
 
     uint8_t begin(void) { is_begin = 1; return u8g_Begin(&u8g); }
@@ -476,6 +472,20 @@ class U8GLIB_UC1608_240X64_2X : public U8GLIB
 };
 
 
+class U8GLIB_UC1611_DOGM240 : public U8GLIB
+{
+  public:
+    U8GLIB_UC1611_DOGM240(uint8_t options = U8G_I2C_OPT_NONE)
+      : U8GLIB(&u8g_dev_uc1611_dogm240_i2c, options)
+      {}
+    U8GLIB_UC1611_DOGM240(uint8_t sck, uint8_t mosi, uint8_t cs, uint8_t a0, uint8_t reset = U8G_PIN_NONE) 
+      : U8GLIB(&u8g_dev_uc1611_dogm240_sw_spi, sck, mosi, cs, a0, reset)
+      { }
+    U8GLIB_UC1611_DOGM240(uint8_t cs, uint8_t a0, uint8_t reset = U8G_PIN_NONE) 
+      : U8GLIB(&u8g_dev_uc1611_dogm240_hw_spi, cs, a0, reset)
+      { }
+};
+
 class U8GLIB_ST7920_128X64 : public U8GLIB 
 {
   public:
@@ -660,7 +670,7 @@ class U8GLIB_LC7981_240X128 : public U8GLIB
       { }
 };
 
-// 16 bit mode required: Remove comment from "#define U8G_16BIT 1" in u8g.h
+// 16 bit mode required: Remove comment from "#define U8G_16BIT 1" in utility/u8g.h
 class U8GLIB_LC7981_320X64 : public U8GLIB 
 {
   public:
