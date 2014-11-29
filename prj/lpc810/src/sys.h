@@ -48,8 +48,8 @@
 #include "stdint.h"
 
 
-#define SYS_CORE_CLOCK 12000000UL
-#define SYS_TICK_PERIOD_IN_MS 50
+#define SYS_CORE_CLOCK 30000000UL
+#define SYS_TICK_PERIOD_IN_MS 10
 
 
 void delay_system_ticks(uint32_t sys_ticks);
@@ -58,7 +58,13 @@ void delay_micro_seconds(uint32_t us);
 void i2c_init(void);
 void i2c_start(void) ;
 void i2c_stop(void);
-uint8_t i2c_write_byte(uint8_t b);
+unsigned i2c_write_byte(unsigned b);
+
+/*
+  nack must be 0 if the data reading continues
+  nack should be 1 after the last byte. send stop after this
+*/
+unsigned i2c_read_byte(unsigned nack);
 
 
 #endif

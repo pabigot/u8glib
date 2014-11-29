@@ -42,6 +42,10 @@
 
 #include "chip.h"
 #include "sys.h"
+#include "port.h"
+#include "clk.h"
+#include "key.h"
+
 
 
 /*=======================================================================*/
@@ -141,40 +145,14 @@ void delay_micro_seconds(uint32_t us)
 /*=======================================================================*/
 /* system procedures and sys tick master task */
 
-volatile uint32_t sys_tick_irq_cnt=0;
 
-
-void __attribute__ ((interrupt)) SysTick_Handler(void)
-{
-  sys_tick_irq_cnt++;
-  
-}
-
-
-/*=======================================================================*/
-/* u8g delay procedures */
-
-void u8g_Delay(uint16_t val)
-{
-    
-  delay_micro_seconds(1000UL*(uint32_t)val);
-}
-
-void u8g_MicroDelay(void)
-{
-  delay_micro_seconds(1);
-}
-
-void u8g_10MicroDelay(void)
-{
-  delay_micro_seconds(10);
-}
 
 /*=======================================================================*/
 /* generic  i2c (http://en.wikipedia.org/wiki/I%C2%B2C) */
 /* SCL: 0_3 */
 /* SDA: 0_0 */
 
+#define I2C_DLY 0
 
 uint8_t i2c_started = 0;
 
@@ -183,141 +161,274 @@ static void i2c_delay(void)
   /* should be at least 4 */
   /* should be 5 for 100KHz transfer speed */
   
-  delay_micro_seconds(5);
+  delay_micro_seconds(4);
 }
 
-void __attribute__ ((noinline)) i2c_init(void)
+const uint16_t pcs_i2c_init[] = 
 {
-  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO0,PIN_MODE_INACTIVE);	/* no pullup/-down */
-  Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO3,PIN_MODE_INACTIVE);	/* no pullup/-down */
-  Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON, IOCON_PIO3);	
-  Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON, IOCON_PIO0);	
-  Chip_GPIO_SetPinOutLow(LPC_GPIO_PORT, 0, 3);
-  Chip_GPIO_SetPinOutLow(LPC_GPIO_PORT, 0, 0);
+  PCS_BASE(LPC_IOCON_BASE),
+  
+  /* Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO0,PIN_MODE_INACTIVE); */
+  /* PIO0 is at index 0x11, Clear both mode bits to disable pull up/down */
+  PCS_CLRB(3, 0x011),
+  PCS_CLRB(4, 0x011),
+
+  /* Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO3,PIN_MODE_INACTIVE); */
+  /* PIO3 is at index 0x5, Clear both mode bits to disable pull up/down */
+  PCS_CLRB(3, 0x5),
+  PCS_CLRB(4, 0x5),
+  
+  /* Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON, IOCON_PIO0); */
+  /* PIO0 is at index 0x11, Open Drain is bit 10 */
+  PCS_SETB(10, 0x11),
+  /* Chip_IOCON_PinEnableOpenDrainMode(LPC_IOCON, IOCON_PIO3); */
+  /* PIO3 is at index 0x5, Open Drain is bit 10 */
+  PCS_SETB(10, 0x5),
+  
+  PCS_BASE(LPC_GPIO_PORT_BASE+0x2000),
+  //Chip_GPIO_SetPinOutLow(LPC_GPIO_PORT, 0, 3);
+  PCS_SETB(3, 0x280/4),
+  //Chip_GPIO_SetPinOutLow(LPC_GPIO_PORT, 0, 0);
+  PCS_SETB(0, 0x280/4),
+  // delay
+  PCS_DLY(I2C_DLY) | PCS_END
+};
+
+
+/* maybe this can be optimized */
+void i2c_init(void)
+{
+  pcs(pcs_i2c_init);
 }
 
-uint8_t __attribute__ ((noinline)) i2c_read_scl(void)
+
+/* actually, the scl line is not observed, so this procedure does not return a value */
+const uint16_t pcs_i2c_read_scl_and_delay[] = 
+{  
+  PCS_BASE(LPC_GPIO_PORT_BASE+0x2000),
+//Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 3);
+  PCS_CLRB(3, 0x000/4),
+  PCS_DLY(I2C_DLY) | PCS_END
+};
+
+/* actually, the scl line is not observed, so this procedure does not return a value */
+void i2c_read_scl_and_delay(void)
 {
-  Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 3);
-  return Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, 0, 3);
+  pcs(pcs_i2c_read_scl_and_delay);
 }
+
+const uint16_t pcs_i2c_clear_scl[] = 
+{  
+  PCS_BASE(LPC_GPIO_PORT_BASE+0x2000),
+//Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 0, 3);
+//LPC_GPIO_PORT->DIR[0] |= 1UL << 3;
+  PCS_SETB(3, 0x000/4) | PCS_END
+};
+
 
 void __attribute__ ((noinline)) i2c_clear_scl(void)
 {
   /* set open collector and drive low */
-  //Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 0, 3);
-  //LPC_GPIO_PORT->DIR[0] &= ~(1UL << 3);
-  LPC_GPIO_PORT->DIR[0] |= 1UL << 3;
-
+  pcs(pcs_i2c_clear_scl);
 }
+
+const uint16_t pcs_i2c_read_sda[] = 
+{  
+  PCS_BASE(LPC_GPIO_PORT_BASE+0x2000),
+//Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 3);
+  PCS_CLRB(0, 0x000/4), 
+  PCS_GETB(0, 0x100/4) | PCS_END
+};
+
 
 uint8_t __attribute__ ((noinline)) i2c_read_sda(void)
 {
-  Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 0);
-  return Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, 0, 0);  
+  //Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 0);
+  return pcs(pcs_i2c_read_sda);
+  //return Chip_GPIO_ReadPortBit(LPC_GPIO_PORT, 0, 0);  
 }
+
+const uint16_t pcs_i2c_clear_sda[] = 
+{  
+  PCS_BASE(LPC_GPIO_PORT_BASE+0x2000),
+//Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 0, 3);
+//LPC_GPIO_PORT->DIR[0] |= 1UL << 3;
+  PCS_SETB(0, 0x000/4) | PCS_END
+};
 
 void __attribute__ ((noinline)) i2c_clear_sda(void)
 {
   /* set open collector and drive low */
-  Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 0, 0);
+  pcs(pcs_i2c_clear_sda);
+  // Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 0, 0);
 }
 
-void __attribute__ ((noinline)) i2c_start(void) 
+const uint16_t pcs_i2c_restart[] = 
+{
+  PCS_BASE(LPC_GPIO_PORT_BASE+0x2000),
+  // read sda / set high
+  PCS_CLRB(0, 0x000/4), 
+  // delay
+  PCS_DLY(I2C_DLY),
+  // read scl
+  PCS_CLRB(3, 0x000/4),
+  PCS_DLY(I2C_DLY) | PCS_END
+};
+
+const uint16_t pcs_i2c_start[] = 
+{
+  PCS_BASE(LPC_GPIO_PORT_BASE+0x2000),
+  // read sda / set high
+  PCS_CLRB(0, 0x000/4), 
+  // clear sda / set low
+  PCS_SETB(0, 0x000/4),
+  // delay
+  PCS_DLY(I2C_DLY),
+  // clear scl
+  PCS_SETB(3, 0x000/4) | PCS_END
+};
+
+void i2c_start(void) 
 {
   if ( i2c_started != 0 ) 
   { 
     /* if already started: do restart */
-    i2c_read_sda();	/* SDA = 1 */
-    i2c_delay();
-    i2c_read_scl();
-    /* clock stretching is not done */
-    /* while (i2c_read_scl() == 0)   ; */
-    i2c_delay();		/* another delay, just to be sure... */
+    //i2c_read_sda();	/* SDA = 1 */
+    //i2c_delay();
+    //i2c_read_scl_and_delay();
+    pcs(pcs_i2c_restart);
   }
-  i2c_read_sda();
-  /*
-  if (i2c_read_sda() == 0) 
-  {
-    // do something because arbitration is lost
-  }
-  */
+  //i2c_read_sda();
   /* send the start condition, both lines go from 1 to 0 */
-  i2c_clear_sda();
-  i2c_delay();
-  i2c_clear_scl();
+  //i2c_clear_sda();
+  //i2c_delay();
+  //i2c_clear_scl();
+  
+  pcs(pcs_i2c_start);
   i2c_started = 1;
 }
 
+const uint16_t pcs_i2c_stop[] = 
+{
+  PCS_BASE(LPC_GPIO_PORT_BASE+0x2000),
+  // clear sda / set low
+  PCS_SETB(0, 0x000/4),
+  // delay
+  PCS_DLY(I2C_DLY),
+  // read scl */
+  PCS_CLRB(3, 0x000/4),
+  // delay
+  PCS_DLY(I2C_DLY),
+  // read sda
+  PCS_CLRB(0, 0x000/4), 
+  // delay
+  PCS_DLY(I2C_DLY) | PCS_END
+};
 
-void __attribute__ ((noinline)) i2c_stop(void)
+void i2c_stop(void)
 {
   /* set SDA to 0 */
-  i2c_clear_sda();  
-  i2c_delay();
+  //i2c_clear_sda();  
+  //i2c_delay();
   
   /* now release all lines */
-  i2c_read_scl();
-  /* clock stretching is not done */
-  /* while (i2c_read_scl() == 0)   ; */
-  i2c_delay();		/* another delay, just to be sure... */
+  //i2c_read_scl_and_delay();
   
   /* set SDA to 1 */
-  i2c_read_sda();
-  /*
-  if (i2c_read_sda() == 0) 
-  {
-    // do something because arbitration is lost
-  }
-  */
-  i2c_delay();
+  //i2c_read_sda();
+  //i2c_delay();
+  pcs(pcs_i2c_stop);
   i2c_started = 0;
 }
 
-void i2c_write_bit(uint8_t val) 
+const uint16_t pcs_i2c_write_1[] = 
 {
+  PCS_BASE(LPC_GPIO_PORT_BASE+0x2000),
+  // read sda
+  PCS_CLRB(0, 0x000/4), 
+  // delay
+  //PCS_DLY(I2C_DLY),
+  // read scl */
+  PCS_CLRB(3, 0x000/4),
+  // delay
+  //PCS_DLY(I2C_DLY),
+  PCS_BASE(LPC_GPIO_PORT_BASE+0x2000),		// use BASE command for delay --> 90KHz
+  // clear scl
+  PCS_SETB(3, 0x000/4) | PCS_END
+};
+
+const uint16_t pcs_i2c_write_0[] = 
+{
+  PCS_BASE(LPC_GPIO_PORT_BASE+0x2000),
+  // clear sda / set low
+  PCS_SETB(0, 0x000/4),
+  // delay
+  //PCS_DLY(I2C_DLY),
+  // read scl */
+  PCS_CLRB(3, 0x000/4),
+  // delay
+  //PCS_DLY(I2C_DLY),
+  PCS_BASE(LPC_GPIO_PORT_BASE+0x2000),		// use BASE command for delay --> 90KHz
+  // clear scl
+  PCS_SETB(3, 0x000/4) | PCS_END
+};
+
+void __attribute__ ((noinline)) i2c_write_bit(uint8_t val) 
+{
+  if ( val )
+    pcs(pcs_i2c_write_1);
+  else
+    pcs(pcs_i2c_write_0);
+  /*
   if (val)
     i2c_read_sda();
   else
     i2c_clear_sda();
   
   i2c_delay();
-  i2c_read_scl();
-  /* clock stretching is not done */
-  /* while (i2c_read_scl() == 0)   ; */
-
-  /* validation is skipped, because this will be the only master */  
-  /* If SDA is high, check that nobody else is driving SDA */
-  /*
-  if (val && i2c_read_sda() == 0) 
-  {
-    arbitration_lost();
-  }
-  */
-  i2c_delay();
+  i2c_read_scl_and_delay();
   i2c_clear_scl();
+  */
 }
 
-uint8_t i2c_read_bit(void) 
+const uint16_t pcs_i2c_read_bit[] = 
 {
-  uint8_t val;
+  PCS_BASE(LPC_GPIO_PORT_BASE+0x2000),
+  // read sda
+  PCS_CLRB(0, 0x000/4), 
+  // delay
+  PCS_DLY(I2C_DLY),
+  // read scl */
+  PCS_CLRB(3, 0x000/4),
+  // delay
+  PCS_DLY(I2C_DLY),
+  // really read value from sda
+  PCS_GETB(0, 0x100/4),
+  // delay
+  PCS_DLY(I2C_DLY),
+  // clear scl
+  PCS_SETB(3, 0x000/4) | PCS_END
+};
+
+unsigned __attribute__ ((noinline)) i2c_read_bit(void) 
+{
+  return pcs(pcs_i2c_read_bit);
+  //uint8_t val;
   /* do not drive SDA */
+  /*
   i2c_read_sda();
   i2c_delay();
-  i2c_read_scl();
-  /* clock stretching is not done */
-  /* while (i2c_read_scl() == 0)   ; */
-  
-  i2c_delay();	/* may not be required... */
+  i2c_read_scl_and_delay();
   val = i2c_read_sda();
   i2c_delay();
   i2c_clear_scl();
   return val;
+  */
 }
 
-uint8_t i2c_write_byte(uint8_t b)
+unsigned __attribute__ ((noinline)) i2c_write_byte(unsigned b)
 {
-  uint8_t i = 8;
+  unsigned i = 8;
   do
   {
     i2c_write_bit(b & 128);
@@ -330,103 +441,24 @@ uint8_t i2c_write_byte(uint8_t b)
   return i2c_read_bit();
 }
 
-/*=======================================================================*/
-/* u8glib com callback */
-
-#ifdef U8G_CODE
-
-#define I2C_SLA         (0x3c*2)
-//#define I2C_CMD_MODE  0x080
-#define I2C_CMD_MODE    0x000
-#define I2C_DATA_MODE   0x040
-
-uint8_t u8g_a0_state;
-uint8_t u8g_set_a0;
-
-static void u8g_com_ssd_start_sequence(u8g_t *u8g)
+/*
+  nack must be 0 if the data reading continues
+  nack should be 1 after the last byte. send stop after this
+*/
+unsigned __attribute__ ((noinline)) i2c_read_byte(unsigned nack)
 {
-  /* are we requested to set the a0 state? */
-  if ( u8g_set_a0 == 0 )
-    return;
-
-  i2c_start();
-  i2c_write_byte(I2C_SLA);		// address and 0 for RWn bit
-  
-  if ( u8g_a0_state == 0 )
+  unsigned i = 8;
+  unsigned b = 0;
+  do
   {
-    i2c_write_byte(I2C_CMD_MODE);
-  }
-  else
-  {
-    i2c_write_byte(I2C_DATA_MODE);
-  }
-
-  u8g_set_a0 = 0;
+    b <<= 1;
+    b |= i2c_read_bit();
+    i--;
+  } while ( i != 0 );
+  i2c_write_bit(nack);
+  return b;
 }
 
-uint8_t u8g_com_ssd_i2c_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val, void *arg_ptr)
-{
-  switch(msg)
-  {
-    case U8G_COM_MSG_INIT:
-      //u8g_com_arduino_digital_write(u8g, U8G_PI_SCL, HIGH);
-      //u8g_com_arduino_digital_write(u8g, U8G_PI_SDA, HIGH);
-      //u8g_a0_state = 0;       /* inital RS state: unknown mode */
-    
-      i2c_init();
-      break;
-    
-    case U8G_COM_MSG_STOP:
-      break;
-
-    case U8G_COM_MSG_RESET:
-     break;
-      
-    case U8G_COM_MSG_CHIP_SELECT:
-      u8g_a0_state = 0;
-      u8g_set_a0 = 1;		/* force a0 to set again, also forces start condition */
-      if ( arg_val == 0 )
-      {
-        /* disable chip, send stop condition */
-	i2c_stop();
-     }
-      else
-      {
-        /* enable, do nothing: any byte writing will trigger the i2c start */
-      }
-      break;
-
-    case U8G_COM_MSG_WRITE_BYTE:
-      //u8g_set_a0 = 1;
-      u8g_com_ssd_start_sequence(u8g);
-      i2c_write_byte(arg_val);
-      break;
-    
-    case U8G_COM_MSG_WRITE_SEQ_P:
-    case U8G_COM_MSG_WRITE_SEQ:
-      //u8g_set_a0 = 1;
-      u8g_com_ssd_start_sequence(u8g);
-      {
-        register uint8_t *ptr = arg_ptr;
-        while( arg_val > 0 )
-        {
-	  i2c_write_byte(*ptr++);
-          arg_val--;
-        }
-      }
-      // lpc81x_i2c_stop();
-      break;
-
-    case U8G_COM_MSG_ADDRESS:                     /* define cmd (arg_val = 0) or data mode (arg_val = 1) */
-      u8g_a0_state = arg_val;
-      u8g_set_a0 = 1;		/* force a0 to set again */
-    
-      break;
-  }
-  return 1;
-}
-
-#endif
 
 
 /*=======================================================================*/
@@ -503,7 +535,11 @@ void __attribute__ ((interrupt)) __attribute__ ((noreturn)) Reset_Handler(void)
 }
 
 /* declare the SysTick_Handler only. It must be defined in the user code */
-void __attribute__ ((interrupt)) SysTick_Handler(void);
+void __attribute__ ((interrupt)) SysTick_Handler(void)
+{
+  clk_irq();
+  key_irq();
+}
 
 
 /* "NMI_Handler" is used in the ld script to calculate the checksum */

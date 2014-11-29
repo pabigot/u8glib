@@ -41,13 +41,82 @@
 #include "chip.h"
 #include "sys.h"
 #include "oled.h"
+#include "port.h"
+#include "clk.h"
+#include "menu.h"
 
 
-#define SYS_CORE_CLOCK 12000000UL
-#define SYS_TICK_PERIOD_IN_MS 50
+
+/*=======================================================================*/
 
 
+/*=======================================================================*/
 
+
+/*=================================================*/
+
+
+//Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 0, 2);
+const uint16_t pcs_led_out[] = 
+{  
+  PCS_BASE(LPC_GPIO_PORT_BASE+0x2000),
+  PCS_SETB(2, 0x000/4) | PCS_END
+};
+
+//Chip_GPIO_SetPinOutHigh(LPC_GPIO_PORT, 0, 2); 	
+const uint16_t pcs_led_high[] = 
+{  
+  PCS_BASE(LPC_GPIO_PORT_BASE+0x2000),
+  PCS_SETB(2, 0x200/4) | PCS_END
+};
+
+//Chip_GPIO_SetPinOutLow(LPC_GPIO_PORT, 0, 2);    
+const uint16_t pcs_led_low[] = 
+{
+  PCS_BASE(LPC_GPIO_PORT_BASE+0x2000),
+  PCS_SETB(2, 0x280/4) | PCS_END
+};
+
+//Chip_GPIO_SetPinOutLow(LPC_GPIO_PORT, 0, 2);    
+const uint16_t pcs_main_init[] = 
+{
+  PCS_BASE(LPC_SYSCTL_BASE),
+  /* enable GPIO (bit 6) in SYSAHBCLKCTRL, Chip_GPIO_Init(LPC_GPIO_PORT); */
+  PCS_SETB(6, 0x080/4),
+  /* enable IOCON (bit 18) in SYSAHBCLKCTRL,Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_IOCON); */
+  PCS_SETB(18, 0x080/4),
+  /* enable switch matrix (bit 6), Chip_SWM_Init(); */
+  PCS_SETB(7, 0x080/4),
+  
+  /* load switch matrix base */
+  PCS_BASE(LPC_SWM_BASE),
+  /* disable SWCLK at PIO_3, this might be enabled by boot sequence */
+  PCS_SETB(2, 0x1c0/4),
+  /* disable SWDIO at PIO_2, this might be enabled by boot sequence */
+  PCS_SETB(3, 0x1c0/4),
+
+  PCS_BASE(LPC_IOCON_BASE),
+  
+  /* Chip_IOCON_PinSetMode(LPC_IOCON,IOCON_PIO0,PIN_MODE_INACTIVE); */
+  /* PIO1 is at index 0x0B, Clear bit 3, set bit 4 for pullup */
+  PCS_CLRB(3, 0x0B),
+  PCS_SETB(4, 0x0B),
+  /* disable open drain */
+  PCS_CLRB(10, 0x0B),
+
+    /* PIO4 is at index 0x04, Clear bit 3, set bit 4 for pullup */
+  PCS_CLRB(3, 0x04),
+  PCS_SETB(4, 0x04),
+  /* disable open drain */
+  PCS_CLRB(10, 0x04),
+
+  PCS_BASE(LPC_GPIO_PORT_BASE+0x2000),
+//Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 1);
+  PCS_CLRB(1, 0x000/4),
+//Chip_GPIO_SetPinDIRInput(LPC_GPIO_PORT, 0, 4);
+  PCS_CLRB(4, 0x000/4) | PCS_END
+  
+};
 
 
 /*=======================================================================*/
@@ -55,39 +124,90 @@
 
 int __attribute__ ((noinline)) main(void)
 {
+  
+  /* setup 30MHz for the LPC810 */
+   
+   /* oscillator controll registor, no change needed for int. RC osc. */
+  //LPC_SYSCTL->SYSOSCCTRL = 0;		/* no bypass (bit 0), low freq range (bit 1), reset value is also 0 */
+  
+  //LPC_SYSCTL->SYSPLLCLKSEL = 0;			/* select PLL source, 0: IRC, 1: Sys osc, reset value is 0 */
+  //LPC_SYSCTL->SYSPLLCLKUEN = 0;			/* confirm change by writing 0 and 1 to SYSPLLCLKUEN */
+  //LPC_SYSCTL->SYSPLLCLKUEN = 1;
+ /*
+  4:0 6:5
+31:7
+Description Reset
+value
+4:0	MSEL 	Feedback divider value. The division value M is the programmed MSEL value + 1.
+			00000: Division ratio M = 1
+			to
+			11111: Division ratio M = 32 0
+6:5	PSEL 	Post divider ratio P. The division ratio is 2 X P
+			Value
+			0x0 P = 1
+			0x1 P = 2
+			0x2 P = 4
+			0x3 P = 8
+			
+Fout = Fin * M = Fin * MSEL+1
+*/  
+  
+  
+  LPC_SYSCTL->SYSPLLCTRL = 4 | (1 << 5);	/* 60 Mhz, m (bits 0..4) = 4, p (bits 5..6)= 1 (div by 2) */
+  LPC_SYSCTL->SYSAHBCLKDIV = 2;			/* divide by 2 to get 30 MHz, however, at the moment we will get 6MHz */
+  LPC_SYSCTL->PDRUNCFG &= ~(1UL<<7); 	/* power-up PLL */
+
+  while (!(LPC_SYSCTL->SYSPLLSTAT & 1))
+    ;	/* wait for PLL lock */
+   
+  LPC_SYSCTL->MAINCLKSEL = 3;				/* select PLL for main clock */
+  LPC_SYSCTL->MAINCLKUEN = 0;				/* confirm change by writing 0 and 1 to MAINCLKUEN */
+  LPC_SYSCTL->MAINCLKUEN = 1;	
+
 
   /* set systick and start systick interrupt */
   SysTick_Config(SYS_CORE_CLOCK/1000UL*(unsigned long)SYS_TICK_PERIOD_IN_MS);
+ 
+
+  /* enable peripheral systems */ 
+  pcs(pcs_main_init);
   
   /* turn on GPIO */
-  Chip_GPIO_Init(LPC_GPIO_PORT);
-
+  //Chip_GPIO_Init(LPC_GPIO_PORT);
+ 
   /* disable SWCLK and SWDIO, after reset, boot code may activate this */
-  Chip_SWM_DisableFixedPin(2);
-  Chip_SWM_DisableFixedPin(3);
+  //Chip_SWM_DisableFixedPin(2);
+  //Chip_SWM_DisableFixedPin(3);
   
   /* turn on IOCON */
-  Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_IOCON);
-  
+  //Chip_Clock_EnablePeriphClock(SYSCTL_CLOCK_IOCON);
   /* turn on switch matrix */
-  Chip_SWM_Init();
+  //Chip_SWM_Init();
   
   /* activate analog comperator */
-  Chip_ACMP_Init(LPC_CMP);
+  //Chip_ACMP_Init(LPC_CMP);
 
   /* let LED on pin 4 of the DIP8 blink */
-  Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 0, 2);  
-  
+  //Chip_GPIO_SetPinDIROutput(LPC_GPIO_PORT, 0, 2);
+  pcs(pcs_led_out);
+
+  clk_init();
+
+
   oled_init();
   
-  for(;;)
+  menu();
+  
   {
-    Chip_GPIO_SetPinOutHigh(LPC_GPIO_PORT, 0, 2); 	
-    delay_micro_seconds(500000UL);
-    Chip_GPIO_SetPinOutLow(LPC_GPIO_PORT, 0, 2);    
-    delay_micro_seconds(500000UL);
+    for(;;)
+    {    
+      pcs(pcs_led_high);
+      delay_micro_seconds(100000UL);
+      pcs(pcs_led_low);
+      delay_micro_seconds(100000UL);
+    }
+    
   }
-
   
   /* enter sleep mode: Reduce from 1.4mA to 0.8mA with 12MHz */  
   while (1)
