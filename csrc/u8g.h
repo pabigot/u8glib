@@ -61,10 +61,9 @@ typedef signed short int16_t;
 /* 
   use the com interface directly on any systems which are not AVR or ARDUINO 
 */
-#if defined(__AVR__) || defined(ARDUINO)
+#if defined(__AVR__) || defined(ARDUINO) || defined(__MSP430__)
 #define U8G_WITH_PINLIST
 #endif
-#define U8G_WITH_PINLIST
 
 
 #ifdef __cplusplus
@@ -92,6 +91,19 @@ extern "C" {
 #  define U8G_SECTION(name)
 #  define U8G_FONT_SECTION(name)
 #endif
+
+#ifdef __MSP430__
+/*
+  Specifying a section will cause the MSP-GCC to put even const data to RAM
+  at least for the fonts. But as the fonts are consts we don't need to specify
+  it manually - the MSP-GCC seems to be smart enough to put it into the
+  flash memory.
+*/
+# undef U8G_SECTION
+# define U8G_SECTION(name)
+#endif
+
+/*===============================================================*/
 
 #ifndef U8G_FONT_SECTION
 #  define U8G_FONT_SECTION(name)
@@ -255,11 +267,13 @@ extern u8g_dev_t u8g_dev_st7565_dogm128_2x_parallel;
 extern u8g_dev_t u8g_dev_uc1611_dogm240_i2c;
 extern u8g_dev_t u8g_dev_uc1611_dogm240_hw_spi;
 extern u8g_dev_t u8g_dev_uc1611_dogm240_sw_spi;
+extern u8g_dev_t u8g_dev_uc1611_dogm240_8bit;
 
 /* EA DOGXL 240 */
 extern u8g_dev_t u8g_dev_uc1611_dogxl240_i2c;
 extern u8g_dev_t u8g_dev_uc1611_dogxl240_hw_spi;
 extern u8g_dev_t u8g_dev_uc1611_dogxl240_sw_spi;
+extern u8g_dev_t u8g_dev_uc1611_dogxl240_8bit;
 
 /* Display: Topway LM6059 128x64 (Adafruit) */
 extern u8g_dev_t u8g_dev_st7565_lm6059_sw_spi;
@@ -305,6 +319,13 @@ extern u8g_dev_t u8g_dev_uc1608_240x64_hw_spi;
 
 extern u8g_dev_t u8g_dev_uc1608_240x64_2x_sw_spi;
 extern u8g_dev_t u8g_dev_uc1608_240x64_2x_hw_spi;
+
+/* UC1608 240x128 */
+extern u8g_dev_t u8g_dev_uc1608_240x128_sw_spi;
+extern u8g_dev_t u8g_dev_uc1608_240x128_hw_spi;
+
+extern u8g_dev_t u8g_dev_uc1608_240x128_2x_sw_spi;
+extern u8g_dev_t u8g_dev_uc1608_240x128_2x_hw_spi;
 
 /* dfrobot 128x64 Graphic LCD (SKU:FIT0021) */
 extern u8g_dev_t u8g_dev_st7920_128x64_sw_spi;
@@ -487,6 +508,11 @@ extern u8g_dev_t u8g_dev_ssd1351_128x128gh_hicolor_hw_spi;
 extern u8g_dev_t u8g_dev_ssd1351_128x128gh_4x_hicolor_sw_spi;
 extern u8g_dev_t u8g_dev_ssd1351_128x128gh_4x_hicolor_hw_spi;
 
+
+/* SSD1353 OLED Palmtronics */
+extern u8g_dev_t u8g_dev_ssd1353_160x128_332_hw_spi;
+extern u8g_dev_t u8g_dev_ssd1353_160x128_hicolor_hw_spi;
+
 /* HT1632 */
 extern u8g_dev_t u8g_dev_ht1632_24x16;
 
@@ -620,7 +646,12 @@ struct _u8g_dev_arg_irgb_t
 
 
 /* com driver */
+
 uint8_t u8g_com_null_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val, void *arg_ptr);               /* u8g_com_null.c */
+
+uint8_t u8g_com_std_sw_spi_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val, void *arg_ptr);	/* requires U8G_WITH_PINLIST */
+
+
 uint8_t u8g_com_arduino_std_sw_spi_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val, void *arg_ptr);        /* u8g_com_arduino_std_sw_spi.c */
 uint8_t u8g_com_arduino_hw_usart_spi_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val, void *arg_ptr);      /* u8g_com_atmega_hw_usart_spi.c */
 uint8_t u8g_com_arduino_sw_spi_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val, void *arg_ptr);        /* u8g_com_arduino_sw_spi.c */
@@ -644,6 +675,8 @@ uint8_t u8g_com_atmega_st7920_sw_spi_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val
 uint8_t u8g_com_atmega_st7920_hw_spi_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val, void *arg_ptr);
 uint8_t u8g_com_atmega_parallel_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val, void *arg_ptr);    /* u8g_com_atmega_parallel.c */
 
+uint8_t u8g_com_msp430_hw_spi_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val, void *arg_ptr);      /* u8g_com_msp430_hw_spi.c */
+
 uint8_t u8g_com_raspberrypi_hw_spi_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val, void *arg_ptr);                /* u8g_com_rasperrypi_hw_spi.c */
 uint8_t u8g_com_raspberrypi_ssd_i2c_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val, void *arg_ptr);		/* u8g_com_raspberrypi_ssd_i2c.c */
 
@@ -662,6 +695,12 @@ uint8_t u8g_com_raspberrypi_ssd_i2c_fn(u8g_t *u8g, uint8_t msg, uint8_t arg_val,
 defined(__18CXX) || defined(__PIC32MX)  
 
 */
+
+/* ==== HW SPI, msp430  ====*/
+#if defined(__MSP430__)
+#define U8G_COM_HW_SPI u8g_com_msp430_hw_spi_fn
+#define U8G_COM_ST7920_HW_SPI u8g_com_null_fn
+#endif
 
 /* ==== HW SPI, Raspberry PI ====*/
 #if defined(U8G_RASPBERRY_PI)
@@ -733,6 +772,13 @@ defined(__18CXX) || defined(__PIC32MX)
 
 #ifndef U8G_COM_SW_SPI
 /* ==== SW SPI, not Arduino ====*/
+
+/* ==== SW SPI, msp430  ====*/
+#if defined(__MSP430__)
+#define U8G_COM_SW_SPI u8g_com_std_sw_spi_fn
+#define U8G_COM_ST7920_SW_SPI u8g_com_null_fn
+#endif
+
 #if defined(__AVR__)
 #define U8G_COM_SW_SPI u8g_com_atmega_sw_spi_fn
 #define U8G_COM_ST7920_SW_SPI u8g_com_atmega_st7920_sw_spi_fn
@@ -743,7 +789,7 @@ defined(__18CXX) || defined(__PIC32MX)
 #define U8G_COM_ST7920_SW_SPI u8g_com_null_fn
 #endif
 
-/* ==== Parallel iinterface, Arduino ====*/
+/* ==== Parallel interface, Arduino ====*/
 #if defined(ARDUINO)
 #if defined(__AVR__)
 #define U8G_COM_PARALLEL u8g_com_arduino_parallel_fn
@@ -776,8 +822,8 @@ defined(__18CXX) || defined(__PIC32MX)
 #endif
 
 #ifndef U8G_COM_SSD_I2C
-#if defined(__AVR__)
-/* AVR variant can use the arduino version at the moment */
+#if defined(__AVR__) || defined(__SAM3X8E__)
+/* AVR variant and also DUE can use the arduino version at the moment */
 #define U8G_COM_SSD_I2C u8g_com_arduino_ssd_i2c_fn
 #endif
 #endif
@@ -1402,6 +1448,9 @@ void st_Step(uint8_t player_pos, uint8_t is_auto_fire, uint8_t is_fire);
 /* options for u8g_i2c_init() */
 #define U8G_I2C_OPT_NONE 0
 #define U8G_I2C_OPT_NO_ACK 2
+#define U8G_I2C_OPT_DEV_0 0
+#define U8G_I2C_OPT_DEV_1 4
+#define U8G_I2C_OPT_FAST 16
 
 /* retrun values from u8g_twi_get_error() */
 #define U8G_I2C_ERR_NONE 0x00
@@ -1821,14 +1870,19 @@ extern const u8g_fntpgm_uint8_t u8g_font_helvB24n[] U8G_FONT_SECTION("u8g_font_h
 
 extern const u8g_fntpgm_uint8_t u8g_font_helvR08[] U8G_FONT_SECTION("u8g_font_helvR08");
 extern const u8g_fntpgm_uint8_t u8g_font_helvR08r[] U8G_FONT_SECTION("u8g_font_helvR08r");
+extern const u8g_fntpgm_uint8_t u8g_font_helvR08n[] U8G_FONT_SECTION("u8g_font_helvR08n");
 extern const u8g_fntpgm_uint8_t u8g_font_helvR10[] U8G_FONT_SECTION("u8g_font_helvR10");
 extern const u8g_fntpgm_uint8_t u8g_font_helvR10r[] U8G_FONT_SECTION("u8g_font_helvR10r");
+extern const u8g_fntpgm_uint8_t u8g_font_helvR10n[] U8G_FONT_SECTION("u8g_font_helvR10n");
 extern const u8g_fntpgm_uint8_t u8g_font_helvR12[] U8G_FONT_SECTION("u8g_font_helvR12");
 extern const u8g_fntpgm_uint8_t u8g_font_helvR12r[] U8G_FONT_SECTION("u8g_font_helvR12r");
+extern const u8g_fntpgm_uint8_t u8g_font_helvR12n[] U8G_FONT_SECTION("u8g_font_helvR12n");
 extern const u8g_fntpgm_uint8_t u8g_font_helvR14[] U8G_FONT_SECTION("u8g_font_helvR14");
 extern const u8g_fntpgm_uint8_t u8g_font_helvR14r[] U8G_FONT_SECTION("u8g_font_helvR14r");
+extern const u8g_fntpgm_uint8_t u8g_font_helvR14n[] U8G_FONT_SECTION("u8g_font_helvR14n");
 extern const u8g_fntpgm_uint8_t u8g_font_helvR18[] U8G_FONT_SECTION("u8g_font_helvR18");
 extern const u8g_fntpgm_uint8_t u8g_font_helvR18r[] U8G_FONT_SECTION("u8g_font_helvR18r");
+extern const u8g_fntpgm_uint8_t u8g_font_helvR18n[] U8G_FONT_SECTION("u8g_font_helvR18n");
 extern const u8g_fntpgm_uint8_t u8g_font_helvR24[] U8G_FONT_SECTION("u8g_font_helvR24");
 extern const u8g_fntpgm_uint8_t u8g_font_helvR24r[] U8G_FONT_SECTION("u8g_font_helvR24r");
 extern const u8g_fntpgm_uint8_t u8g_font_helvR24n[] U8G_FONT_SECTION("u8g_font_helvR24n");

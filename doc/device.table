@@ -290,6 +290,44 @@ no
 :Com
 SW SPI
 :Device
+<tt>u8g_dev_ssd1306_adafruit_128x64_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1306_ADAFRUIT_128X64(sck, mosi, cs, a0 [, reset])</tt>
+:Arduino
+impl.
+:Arduino Due
+impl.
+:Chipkit
+impl.
+:AVR
+impl.
+::
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_ssd1306_adafruit_128x64_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_SSD1306_ADAFRUIT_128X64(cs, a0 [, reset])</tt>
+:Arduino
+impl.
+:Arduino Due
+impl.
+:Chipkit
+n.a.
+:AVR
+impl.
+::
+:Display/Size
+128x64
+:Mode
+BW
+:Set Contrast
+no
+:Page Size
+128 Bytes
+:Com
+SW SPI
+:Device
 <tt>u8g_dev_ssd1306_128x64_sw_spi</tt>
 :C++ Constructor
 <tt>U8GLIB_SSD1306_128X64(sck, mosi, cs, a0 [, reset])</tt>
@@ -634,6 +672,114 @@ n.a.
 :AVR
 impl. (v1.10)
 ::
+:Controller
+UC1611
+:Display/Size
+240x64
+:Mode
+BW
+:Set Contrast
+yes
+:Page Size
+240 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_uc1611_dogm240_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_UC1611_DOGM240(sck, mosi, cs, a0 [, reset])</tt>
+:Arduino
+impl. (v1.17)
+:Arduino Due
+impl. (v1.17)
+:Chipkit
+impl. (v1.17)
+:AVR
+impl. (v1.17)
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_uc1611_dogm240_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_UC1611_DOGM240(cs, a0 [, reset])</tt>
+:Arduino
+impl. (v1.17)
+:Arduino Due
+impl. (v1.17)
+:Chipkit
+n.a.
+:AVR
+impl. (v1.17)
+:Com
+I2C
+:Device
+<tt>u8g_dev_uc1611_dogm240_i2c</tt>
+:C++ Constructor
+<tt>U8GLIB_UC1611_DOGM240(U8G_I2C_OPT_NONE)</tt>
+:Arduino
+impl. (v1.17)
+:Arduino Due
+n.a.
+:Chipkit
+n.a.
+:AVR
+impl. (v1.17)
+::
+:Display/Size
+240x128
+:Mode
+BW
+:Set Contrast
+yes
+:Page Size
+240 Bytes
+:Com
+SW SPI
+:Device
+<tt>u8g_dev_uc1611_dogxl240_sw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_UC1611_DOGXL240(sck, mosi, cs, a0 [, reset])</tt>
+:Arduino
+impl. (v1.17)
+:Arduino Due
+impl. (v1.17)
+:Chipkit
+impl. (v1.17)
+:AVR
+impl. (v1.17)
+:Com
+HW SPI
+:Device
+<tt>u8g_dev_uc1611_dogxl240_hw_spi</tt>
+:C++ Constructor
+<tt>U8GLIB_UC1611_DOGXL240(cs, a0 [, reset])</tt>
+:Arduino
+impl. (v1.17)
+:Arduino Due
+impl. (v1.17)
+:Chipkit
+n.a.
+:AVR
+impl. (v1.17)
+:Com
+I2C
+:Device
+<tt>u8g_dev_uc1611_domxl240_i2c</tt>
+:C++ Constructor
+<tt>U8GLIB_UC1611_DOGXL240(U8G_I2C_OPT_NONE)</tt>
+:Arduino
+impl. (v1.17)
+:Arduino Due
+n.a.
+:Chipkit
+n.a.
+:AVR
+impl. (v1.17)
+::
+
+
+
+
 :Controller
 UC1701
 :Display/Size

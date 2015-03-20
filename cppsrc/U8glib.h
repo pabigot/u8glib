@@ -83,7 +83,8 @@ class U8GLIB : public Print
       
     void setPrintPos(u8g_uint_t x, u8g_uint_t y) { tx = x; ty = y; }
     u8g_t *getU8g(void) { return &u8g; }
-    
+    u8g_uint_t getPrintCol(void) { return tx; }	
+    u8g_uint_t getPrintRow(void) { return ty; }    
     
     /* implementation of the write interface to the print class */
 #if defined(ARDUINO) && ARDUINO >= 100
@@ -471,6 +472,28 @@ class U8GLIB_UC1608_240X64_2X : public U8GLIB
       { }
 };
 
+class U8GLIB_UC1608_240X128 : public U8GLIB 
+{
+  public:
+    U8GLIB_UC1608_240X128(uint8_t sck, uint8_t mosi, uint8_t cs, uint8_t a0, uint8_t reset = U8G_PIN_NONE) 
+      : U8GLIB(&u8g_dev_uc1608_240x128_sw_spi, sck, mosi, cs, a0, reset)
+      { }
+    U8GLIB_UC1608_240X128(uint8_t cs, uint8_t a0, uint8_t reset = U8G_PIN_NONE) 
+      : U8GLIB(&u8g_dev_uc1608_240x128_hw_spi, cs, a0, reset)
+      { }
+};
+
+class U8GLIB_UC1608_240X128_2X : public U8GLIB 
+{
+  public:
+    U8GLIB_UC1608_240X128_2X(uint8_t sck, uint8_t mosi, uint8_t cs, uint8_t a0, uint8_t reset = U8G_PIN_NONE) 
+      : U8GLIB(&u8g_dev_uc1608_240x128_2x_sw_spi, sck, mosi, cs, a0, reset)
+      { }
+    U8GLIB_UC1608_240X128_2X(uint8_t cs, uint8_t a0, uint8_t reset = U8G_PIN_NONE) 
+      : U8GLIB(&u8g_dev_uc1608_240x128_2x_hw_spi, cs, a0, reset)
+      { }
+};
+
 
 class U8GLIB_UC1611_DOGM240 : public U8GLIB
 {
@@ -483,6 +506,10 @@ class U8GLIB_UC1611_DOGM240 : public U8GLIB
       { }
     U8GLIB_UC1611_DOGM240(uint8_t cs, uint8_t a0, uint8_t reset = U8G_PIN_NONE) 
       : U8GLIB(&u8g_dev_uc1611_dogm240_hw_spi, cs, a0, reset)
+      { }
+    U8GLIB_UC1611_DOGM240(uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, 
+        uint8_t en, uint8_t cs1, uint8_t di, uint8_t rw = U8G_PIN_NONE, uint8_t reset = U8G_PIN_NONE) 
+      : U8GLIB(&u8g_dev_uc1611_dogm240_8bit, d0, d1, d2, d3, d4, d5, d6, d7, en, cs1, U8G_PIN_NONE, di, rw, reset)  // cs2 = U8G_PIN_NONE
       { }
 };
 
@@ -497,6 +524,10 @@ class U8GLIB_UC1611_DOGXL240 : public U8GLIB
       { }
     U8GLIB_UC1611_DOGXL240(uint8_t cs, uint8_t a0, uint8_t reset = U8G_PIN_NONE) 
       : U8GLIB(&u8g_dev_uc1611_dogxl240_hw_spi, cs, a0, reset)
+      { }
+    U8GLIB_UC1611_DOGXL240(uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t d4, uint8_t d5, uint8_t d6, uint8_t d7, 
+        uint8_t en, uint8_t cs1, uint8_t di, uint8_t rw = U8G_PIN_NONE, uint8_t reset = U8G_PIN_NONE) 
+      : U8GLIB(&u8g_dev_uc1611_dogxl240_8bit, d0, d1, d2, d3, d4, d5, d6, d7, en, cs1, U8G_PIN_NONE, di, rw, reset)  // cs2 = U8G_PIN_NONE
       { }
 };
 
