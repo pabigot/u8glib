@@ -33,5 +33,12 @@ Initial creation was done with the following commands:
       -r /opt/u8glib.hg \
       -M upstream
 
-As upstream changes are made this file will be updated with instructions for
-synchronizing them into the upstream branch.
+Updates are done with:
+
+   cd ../u8glib.hg
+   hg pull
+   hg update
+   cd ../u8glib
+   ../fast-export/hg-fast-export.sh \
+      -r /opt/u8glib.hg \
+      -M upstream
