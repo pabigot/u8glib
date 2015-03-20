@@ -35,10 +35,10 @@ Initial creation was done with the following commands:
 
 Updates are done with:
 
-   cd ../u8glib.hg
-   hg pull
-   hg update
-   cd ../u8glib
-   ../fast-export/hg-fast-export.sh \
+    cd ../u8glib.hg
+    hg pull
+    hg update
+    cd ../u8glib
+    ../fast-export/hg-fast-export.sh \
       -r /opt/u8glib.hg \
       -M upstream
